@@ -4,3 +4,4 @@ thrift>=0.9.1
 #used by RTD... not sure where else to put this
 changelog>=0.3.4
 
+#FIXME: integrate coveralls, see https://coveralls.io/docs/python
