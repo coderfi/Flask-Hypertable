@@ -1,4 +1,5 @@
 # Config file for automatic testing at travis-ci.org
+# see https://travis-ci.org/coderfi/Flask-Hypertable
 
 language: python
 
