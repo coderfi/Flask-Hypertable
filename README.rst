@@ -15,7 +15,7 @@ Flask Hypertable
 .. image:: https://pypip.in/d/flask-hypertable/badge.png
         :target: https://crate.io/packages/flask-hypertable?version=latest
 
-``flask-hypertable`` - A Flask extension which provides connectivity to 
+``Flask-Hypertable`` - A Flask extension which provides connectivity to 
 `Hypertable <http://hypertable.org/>`_ over `Thrift <https://thrift.apache.org/>`_.
 
 
