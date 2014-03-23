@@ -3,8 +3,8 @@ Flask Hypertable
 ================
 
 
-.. image:: https://travis-ci.org/coderfi/flask-hypertable.png?branch=master
-    :target: https://travis-ci.org/coderfi/flask-hypertable
+.. image:: https://travis-ci.org/coderfi/Flask-Hypertable.png?branch=master
+    :target: https://travis-ci.org/coderfi/Flask-Hypertable
 
 .. image:: https://badge.fury.io/py/flask-hypertable.png
     :target: http://badge.fury.io/py/flask-hypertable
