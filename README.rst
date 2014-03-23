@@ -102,6 +102,20 @@ install dev     .. code-block:: bash
 tests           .. code-block:: bash
 
                     $ python setup.py test
+
+                or
+
+                .. code-block:: bash
+
+                    $ tox
+
+                or
+
+                .. code-block:: bash
+
+                    $ python run-tests.py
+
+
 ==============  ==========================================================
 
 About This Project
