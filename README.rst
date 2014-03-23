@@ -88,7 +88,7 @@ Issues          https://github.com/coderfi/Flask-Hypertable/issues
 Travis          http://travis-ci.org/coderfi/Flask-Hypertable
 Test coverage   https://coveralls.io/r/coderfi/Flask-Hypertable
 pypi            https://pypi.python.org/pypi/Flask-Hypertable
-Ohloh           https://www.ohloh.net/p/flask-hypertable
+Ohloh           https://www.ohloh.net/p/Flask-Hypertable
 License         `BSD`_.
 git repo        .. code-block:: bash
 
