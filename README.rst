@@ -83,7 +83,7 @@ Source          https://github.com/coderfi/flask-hypertable
 Docs            http://flask-hypertable.rtfd.org
 Changelog       http://flask-hypertable.readthedocs.org/en/latest/history.html
 API             http://flask-hypertable.readthedocs.org/en/latest/api.html
-Issues          https://github.com/coderfi/flask-hypertable/issues
+Issues          https://github.com/coderfi/Flask-Hypertable/issues
 Travis          http://travis-ci.org/coderfi/flask-hypertable
 Test coverage   https://coveralls.io/r/coderfi/flask-hypertable
 pypi            https://pypi.python.org/pypi/flask-hypertable
