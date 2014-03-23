@@ -12,8 +12,9 @@ Flask Hypertable
 .. image:: https://coveralls.io/repos/coderfi/Flask-Hypertable/badge.png?branch=master
     :target: https://coveralls.io/r/coderfi/flask-hypertable?branch=master
 
-.. image:: https://pypip.in/d/flask-hypertable/badge.png
-        :target: https://crate.io/packages/flask-hypertable?version=latest
+.. image:: https://pypip.in/d/PYPI_PKG_NAME/badge.png
+    :target: https://pypi.python.org/pypi//Flask-Hypertable/
+    :alt: Downloads
 
 ``Flask-Hypertable`` - A Flask extension which provides connectivity to 
 `Hypertable <http://hypertable.org/>`_ over `Thrift <https://thrift.apache.org/>`_.

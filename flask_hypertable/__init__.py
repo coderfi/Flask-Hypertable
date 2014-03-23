@@ -13,7 +13,7 @@ from __future__ import absolute_import, division, print_function, \
     with_statement, unicode_literals
 
 __title__ = 'Flask Hypertable'
-__package_name__ = 'flask_hypertable'
+__package_name__ = 'Flask-Hypertable'
 __author__ = 'Fairiz Azizi'
 __description__ = 'A Flask extension for Hypertable over Thrift.'
 __email__ = 'coderfi@gmail.com'
