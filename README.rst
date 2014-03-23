@@ -6,10 +6,10 @@ Flask Hypertable
 .. image:: https://travis-ci.org/coderfi/Flask-Hypertable.png?branch=master
     :target: https://travis-ci.org/coderfi/Flask-Hypertable
 
-.. image:: https://badge.fury.io/py/flask-hypertable.png
-    :target: http://badge.fury.io/py/flask-hypertable
+.. image:: https://badge.fury.io/gh/coderfi%2FFlask-Hypertable.png
+    :target: http://badge.fury.io/gh/coderfi%2FFlask-Hypertable
 
-.. image:: https://coveralls.io/repos/coderfi/flask-hypertable/badge.png?branch=master
+.. image:: https://coveralls.io/repos/coderfi/Flask-Hypertable/badge.png?branch=master
     :target: https://coveralls.io/r/coderfi/flask-hypertable?branch=master
 
 .. image:: https://pypip.in/d/flask-hypertable/badge.png

@@ -25,5 +25,9 @@ Here you can find the recent changes to Flask Hypertable..
         Docs available on `readthedocs.org <http://flask-hypertable.readthedocs.org/en/latest>`_
      
         CI available at `travis-ci.org <https://travis-ci.org/coderfi/Flask-Hypertable>`_
+     
+        Added project to `badge.fury.io <http://badge.fury.io/for/gh/coderfi/Flask-Hypertable>`_
         
+        Added project to `coveralls.io <https://coveralls.io/r/coderfi/Flask-Hypertable>`_
+           
 .. todo:: vim: set filetype=rst:
