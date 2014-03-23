@@ -12,7 +12,16 @@ Here you can find the recent changes to Flask Hypertable..
         :tags:  docs
 
         Updated CHANGES.
+        
+.. changelog::
+    :version: 0.1.3
+    :released: 2014-03-22
 
+    .. change::
+        :tags: project
+
+        Added Hypertable license information.
+            
 .. changelog::
     :version: 0.1.2
     :released: 2014-03-22
