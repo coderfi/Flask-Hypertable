@@ -5,12 +5,10 @@ TODO
 dev
 ---
 
-- Write the tests
-- Write the project
-- Release
-- Optimize for clarity
-- Release
-- Optimize for speed
-- Release
+* extend ManagedThriftClient with mutator creation helpers
+
+* ORM? Draw on MongoKit, MongoEngine, SQLAlchemy as inspiration  
+  
+* tests
 
 .. todo:: vim: set filetype=rst:

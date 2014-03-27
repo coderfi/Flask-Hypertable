@@ -2,7 +2,7 @@
 Changelog
 =========
 
-Here you can find the recent changes to Flask Hypertable..
+Here you can find the recent changes to Flask Hypertable.
 
 .. changelog::
     :version: dev
@@ -12,6 +12,25 @@ Here you can find the recent changes to Flask Hypertable..
         :tags:  docs
 
         Updated CHANGES.
+
+.. changelog::
+    :version: 0.2.0
+    :released: 2014-03-26
+
+    .. change::
+        :tags: project
+
+        Now supports connection pooling with FlaskPooledHypertable!
+        Added the 'mns' helper object in order to support managed
+
+.. changelog::
+    :version: 0.1.4
+    :released: 2014-03-23
+
+    .. change::
+        :tags: project
+
+        Added Hypertable 0.9.5.6 version info to README.rst
         
 .. changelog::
     :version: 0.1.3

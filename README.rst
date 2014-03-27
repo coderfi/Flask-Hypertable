@@ -77,7 +77,7 @@ or
 
 
 ==============  ==========================================================
-Hypertable      http://hypertable.com/documentation/reference_manual/thrift_api
+Hypertable      0.9.5.6 (other versions likely to work) http://hypertable.com/documentation/reference_manual/thrift_api
 Thrift          https://thrift.apache.org/docs/
 Python support  Python 2.7
 Source          https://github.com/coderfi/flask-hypertable
