@@ -89,7 +89,7 @@ Basic Usage
 
 The following demonstrates using the extension at its most basic level.
 
-See `Hypertable Python Code Examples<http://hypertable.com/documentation/code_examples/python>`_
+See `Hypertable Python Code Examples<http://hypertable.com/documentation/code_examples/python>`_ 
 for more information.
 
 ::
@@ -166,4 +166,4 @@ Troubleshooting
   Did you remember to call the ``FlaskHypertable.init_app(app)`` method when setting
   up your Flask App? If not, the extension will fall back to creating itself in
   each context.
-  See `Flask Extension Development<http://flask.pocoo.org/docs/extensiondev/>` for more info.
+  See `Flask Extension Development<http://flask.pocoo.org/docs/extensiondev/>`_ for more info.
