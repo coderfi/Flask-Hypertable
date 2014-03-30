@@ -10,7 +10,6 @@ import atexit
 
 from Queue import Queue, Empty, Full
 from hypertable.thriftclient import ThriftClient
-from flask import current_app
 from thrift.transport import TTransport
 
 # Find the stack on which we want to store the database connection.
@@ -114,20 +113,23 @@ class FlaskPooledHypertable(FlaskHypertable):
     HYPERTABLE_MAX_OVERFLOW: 10
     """
 
-    # the connection pool
+    # a queue like collection
     _q = None
-
-    # the overflow pool
-    _qo = None
 
     pool_size = 1
     pool_overflow = 0
     overflow_count = 0
 
-    def init_app(self, app):
+    def init_app(self, app, q=None):
+        """
+        :param q the queue to use, optional. If not, then a queue
+               of type ``Queue.Queue`` is created.
+               The queue must be thread safe and conform
+               to the ``Queue.Queue``interface.
+        """
         FlaskHypertable.init_app(self, app)
 
-        self._q = self._qo = None
+        self._q = None
 
         app.config.setdefault('HYPERTABLE_POOL_SIZE', 5)
         app.config.setdefault('HYPERTABLE_MAX_OVERFLOW', 10)
@@ -140,9 +142,10 @@ class FlaskPooledHypertable(FlaskHypertable):
         elif self.pool_overflow < 0:
             raise ValueError("Please specify HYPERTABLE_MAX_OVERFLOW >= 0")
 
-        self._q = Queue(maxsize=self.pool_size)
-        if self.pool_overflow > 0:
-            self._qo = Queue(maxsize=self.pool_overflow)
+        if q is None:
+            self._q = Queue(maxsize=self.pool_size)
+        else:
+            self._q = q
 
     def close_app(self):
         """ shutdowns this instance, forcibly closing all opened
