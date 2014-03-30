@@ -67,7 +67,8 @@ class FlaskHypertable(object):
             app.teardown_request(self.teardown)
 
     def __del__(self):
-        self.close_app()
+        if self:
+            self.close_app()
 
     def close_app(self):
         """ shutdowns this instance, releasing the connection pool """
@@ -230,7 +231,8 @@ class ManagedThriftClient(ThriftClient):
         ThriftClient.close(self)
 
     def __del__(self):
-        self.close()
+        if self:
+            self.close()
 
 
 class ManagedNamespaces(object):
