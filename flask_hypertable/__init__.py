@@ -17,7 +17,7 @@ __package_name__ = 'Flask-Hypertable'
 __author__ = 'Fairiz Azizi'
 __description__ = 'A Flask extension for Hypertable over Thrift.'
 __email__ = 'coderfi@gmail.com'
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 __license__ = 'BSD'
 __copyright__ = 'Copyright 2014 Fairiz Azizi'
 

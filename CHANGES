@@ -14,6 +14,15 @@ Here you can find the recent changes to Flask Hypertable.
         Updated CHANGES.
 
 .. changelog::
+    :version: 0.2.1
+    :released: 2014-03-30
+
+    .. change::
+        :tags: project
+
+        Added HYPERTABLE_TIMEOUT_MSECS option (defaults to 5000 msecs)
+
+.. changelog::
     :version: 0.2.0
     :released: 2014-03-26
 

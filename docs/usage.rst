@@ -23,6 +23,7 @@ Your configuration should be declared within your Flask config::
 
     HYPERTABLE_HOST = "localhost"
     HYPERTABLE_PORT = 38080
+    HYPERTABLE_TIMEOUT_MSECS = 5000
 
     ################
     #if using FlaskPooledHypertable

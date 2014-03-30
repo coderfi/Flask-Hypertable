@@ -33,6 +33,7 @@ class FlaskHypertable(object):
 
     HYPERTABLE_HOST: 'localhost'
     HYPERTABLE_PORT: 38080
+    HYPERTABLE_TIMEOUT_MSECS: 5000
 
     Under the hood, this extension uses the ``ManagedThriftClient``.
     """
@@ -53,6 +54,11 @@ class FlaskHypertable(object):
         """
         app.config.setdefault('HYPERTABLE_HOST', 'localhost')
         app.config.setdefault('HYPERTABLE_PORT', 38080)
+        app.config.setdefault("HYPERTABLE_TIMEOUT_MSECS", 5000)
+
+        self.host = self.app.config['HYPERTABLE_HOST']
+        self.port = self.app.config['HYPERTABLE_PORT']
+        self.timeout_msecs = self.app.config['HYPERTABLE_TIMEOUT_MSECS']
 
         # Use the newstyle teardown_appcontext if it's available,
         # otherwise fall back to the request context
@@ -72,8 +78,9 @@ class FlaskHypertable(object):
         """ Creates a new Thrift client
         :return: ``ManagedThriftClient``
         """
-        return ManagedThriftClient(current_app.config['HYPERTABLE_HOST'],
-                                   current_app.config['HYPERTABLE_PORT'])
+        return ManagedThriftClient(self.host,
+                                   self.port,
+                                   timeout_ms=self.timeout_msecs)
 
     def teardown(self, exception):
         """ Puts the connection object back into the pool. """
