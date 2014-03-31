@@ -12,6 +12,8 @@ from Queue import Queue, Empty, Full
 from hypertable.thriftclient import ThriftClient
 from thrift.transport import TTransport
 
+import threading
+
 # Find the stack on which we want to store the database connection.
 # Starting with Flask 0.9, the _app_ctx_stack is the correct one,
 # before that we need to use the _request_ctx_stack.
@@ -38,26 +40,37 @@ class FlaskHypertable(object):
     """
 
     app = None
+    data = None
 
-    def __init__(self, app=None):
+    def __init__(self, app=None, local=None):
         self.app = app
         if app is not None:
-            self.init_app(app)
+            self.init_app(app, local=local)
 
         # register just in case
         atexit.register(self.close_app)
 
-    def init_app(self, app):
+    def init_app(self, app, local=None):
         """
         Connects Hypertable to your Flask app.
+
+        :param local - if provided, this should be a callable
+               that returns a collection object suitable for local storage.
+               Default is ``threading.local``
+               This is used by __enter__ and __exit__.
         """
+        if local is None:
+            self.data = threading.local()
+        else:
+            self.data = local()
+
         app.config.setdefault('HYPERTABLE_HOST', 'localhost')
         app.config.setdefault('HYPERTABLE_PORT', 38080)
         app.config.setdefault("HYPERTABLE_TIMEOUT_MSECS", 5000)
 
-        self.host = self.app.config['HYPERTABLE_HOST']
-        self.port = self.app.config['HYPERTABLE_PORT']
-        self.timeout_msecs = self.app.config['HYPERTABLE_TIMEOUT_MSECS']
+        self.host = app.config['HYPERTABLE_HOST']
+        self.port = app.config['HYPERTABLE_PORT']
+        self.timeout_msecs = app.config['HYPERTABLE_TIMEOUT_MSECS']
 
         # Use the newstyle teardown_appcontext if it's available,
         # otherwise fall back to the request context
@@ -67,8 +80,10 @@ class FlaskHypertable(object):
             app.teardown_request(self.teardown)
 
     def __del__(self):
-        if self:
+        try:
             self.close_app()
+        except:
+            pass  # just in case
 
     def close_app(self):
         """ shutdowns this instance, releasing the connection pool """
@@ -96,6 +111,28 @@ class FlaskHypertable(object):
                 ctx.ht_client = self.connect()
             return ctx.ht_client
 
+    def __enter__(self):
+        """ Calls connect() and puts the Client object
+        into the thread local storage.
+        """
+        client = self.data.ht_client = self.connect()
+        return client
+
+    def __exit__(self, t, value, traceback):
+        """ Closes the Client that was stored in the thread local storage
+        by the __enter__ method.
+        """
+        ht_client = (hasattr(self.data, 'ht_client')
+                     and self.data.ht_client
+                     or None)
+
+        if ht_client:
+            if ht_client.is_active:
+                self.overflow_count = max(0, self.overflow_count - 1)
+                ht_client.close()
+
+        self.data.ht_client = None
+
 
 class FlaskPooledHypertable(FlaskHypertable):
     """ Extends FlaskHypertable to offer pooled Hypertable ThriftClient
@@ -121,14 +158,12 @@ class FlaskPooledHypertable(FlaskHypertable):
     pool_overflow = 0
     overflow_count = 0
 
-    def init_app(self, app, q=None):
+    def init_app(self, app, local=None, qClass=None):
         """
-        :param q the queue to use, optional. If not, then a queue
-               of type ``Queue.Queue`` is created.
-               The queue must be thread safe and conform
-               to the ``Queue.Queue``interface.
+        :param qClass the queue class to use, optional.
+               Default is ``Queue.Queue`
         """
-        FlaskHypertable.init_app(self, app)
+        FlaskHypertable.init_app(self, app, local=local)
 
         self._q = None
 
@@ -143,24 +178,24 @@ class FlaskPooledHypertable(FlaskHypertable):
         elif self.pool_overflow < 0:
             raise ValueError("Please specify HYPERTABLE_MAX_OVERFLOW >= 0")
 
-        if q is None:
-            self._q = Queue(maxsize=self.pool_size)
-        else:
-            self._q = q
+        qClass = qClass or Queue
+        self._q = qClass(maxsize=self.pool_size)
 
     def close_app(self):
         """ shutdowns this instance, forcibly closing all opened
         connections """
         err = None
-        while True:
-            try:
-                client = self._q.get_nowait()
+
+        if self._q:
+            while True:
                 try:
-                    client.close()
-                except Exception, e:
-                    err = e
-            except Empty:
-                break
+                    client = self._q.get_nowait()
+                    try:
+                        client.close()
+                    except Exception, e:
+                        err = e
+                except Empty:
+                    break
 
         FlaskHypertable.close_app(self)
 
@@ -206,6 +241,40 @@ class FlaskPooledHypertable(FlaskHypertable):
                     if ctx.ht_client.is_active:
                         ctx.ht_client.close()
 
+    def put_back(self, ht_client):
+        """ returns the client to the pool """
+
+        try:
+            self._q.put_nowait(ht_client)
+        except Full:
+            # musta overflowed
+            self.overflow_count = max(0, self.overflow_count - 1)
+            if ht_client.is_active:
+                ht_client.close()
+
+    # completely override based class
+    def __exit__(self, t, value, traceback):
+        """ Puts the connection object back into the pool.
+
+        :param: value if a org.apache.thrift.transport.TTransportException,
+                then the connection object is immediately closed
+                and is thrown away
+        """
+        ht_client = (hasattr(self.data, 'ht_client')
+                     and self.data.ht_client
+                     or None)
+
+        if ht_client:
+            if isinstance(value, TTransport.TTransportException):
+                # throw it away
+                if ht_client.is_active:
+                    self.overflow_count = max(0, self.overflow_count - 1)
+                    ht_client.close()
+            else:
+                self.put_back(ht_client)
+
+        self.data.ht_client = None
+
 
 class ManagedThriftClient(ThriftClient):
     """ Extends the base ``hypertable.thriftclient.ThriftClient``
@@ -231,8 +300,10 @@ class ManagedThriftClient(ThriftClient):
         ThriftClient.close(self)
 
     def __del__(self):
-        if self:
+        try:
             self.close()
+        except:
+            pass  # just in case
 
 
 class ManagedNamespaces(object):
@@ -289,5 +360,7 @@ class ManagedNamespaces(object):
 
     def __del__(self):
         """ Calls close(). """
-
-        self.close()
+        try:
+            self.close()
+        except:
+            pass  # just in case

@@ -113,6 +113,19 @@ for more information.
     for cell in res.cells: print cell
     client.close_namespace(ns)
 
+With Usage
+----------
+
+The client also supports ``with`` semantics
+
+::
+
+    #...
+
+    with ht as client:
+        ns = client.namespace_open("test")
+        client.hql_query(ns, "select * from foo")
+
 Managed Namespaces
 ------------------
 

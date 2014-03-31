@@ -22,8 +22,9 @@ Here you can find the recent changes to Flask Hypertable.
 
         Added HYPERTABLE_TIMEOUT_MSECS option (defaults to 5000 msecs)
         Removed superflous _qo member from FlaskPooledHypertable
-        FlaskPooledHypertable constructor now takes an optional ``q``
+        FlaskPooledHypertable constructor now takes an optional ``qClass``
         override.
+        Now supports ``with`` semantics.
 
 .. changelog::
     :version: 0.2.0
